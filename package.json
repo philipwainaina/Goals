@@ -1,14 +1,25 @@
 {
+  
   "name": "mern-tutorial",
   "version": "1.0.0",
-  "description": "Goal set for tutorial",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node backend/server.js",
-    "server": "nodemon backend/server.js"
+    "server":"nodemon backend/server.js",
+    "dev":"nodemon backend/server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/philipwainaina/mern-tutorial.git"
+  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/philipwainaina/mern-tutorial/issues"
+  },
+  "homepage": "https://github.com/philipwainaina/mern-tutorial#readme",
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^17.4.2",
@@ -19,4 +30,3 @@
     "nodemon": "^3.1.14"
   }
 }
-
