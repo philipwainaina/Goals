@@ -1,34 +1,59 @@
-const asyncHandler = require("express-async-handler") //import the express-async-handler module to handle errors in asynchronous functions
+const asyncHandler = require("express-async-handler") 
+const Goal = require("../models/goalModel") 
 //@desc Get all goals
 //@route GET /api/goals
 //@ccess Private  
-const getGoal = asyncHandler(async (req, res) => {                    //create a function called getGoals 
-  res.status(200).json({ message: "Get  goal" })   //send a response with satus code 200 and message "Get goal" in json format
+const getGoal = asyncHandler(async (req, res) => {  //create a function called getGoals 
+  const goals = await Goal.find() //find all goals in the database
+  res.status(200).json(goals)   //send a response with satus code 200 and the found goals in json format
 })
 
 //@desc Set  goal
 //@route POST /api/goals
 //@ccess Private
-const setGoal = asyncHandler(async (req, res) => { //create a function called setGoals
-  res.status(200).json({ message: "Set  goal" }) //send a response with satus code 200 and message "Set goal" in json format
+const setGoal = asyncHandler(async (req, res) => {
+  if (!req.body?.text){
+    res.status(400)
+    throw new Error("Please add text field")
+  }
+  const goal = await Goal.create({
+    text:req.body.text,
+  })
+
+  res.status(201).json(goal)
 })
+
 
 //@desc Update  goal
 //@route PUT /api/goals/:id
 //@ccess Private
 const updateGoal = asyncHandler(async (req, res) => {  //create a function called updateGoals
-  res.status(200).json({ message: `Update  goal,${req.params.id}`}) //send a response with satus code 200 and message "Update goal" in json format with the id of the goal to be updated
+  const goal = await Goal.findById(req.params.id)
+
+  if (!goal) {
+    res.status(404)
+    throw new Error("Goal not found")
+  }
+
+  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  })
+  res.status(200).json(updatedGoal)
 })
 
 //@desc DELETE  goals
 //@route DELETE /api/goals/:id
 //@ccess Private
-const deleteGoal = asyncHandler(async (req, res) => {   //create a function called deleteGoals
-  res.status(200).json({ message: `Delete  goal,${req.params.id}`}) //send a response with satus code 200 and message "Delete goal" in json format with the id of the goal to be deleted
+const deleteGoal = asyncHandler(async (req, res) => { 
+  const goal = await Goal.findById(req.params.id)
+  if (!goal){
+    res.status(404)
+    throw new Error("Goal not found")
+  }
+  await goal.deleteOne()
+
+  res.status(200).json({ id: req.params.id })
 })
-
-
-
 
 module.exports={
     getGoal,

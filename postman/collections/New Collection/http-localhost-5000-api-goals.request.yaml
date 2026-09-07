@@ -1,0 +1,9 @@
+$kind: http-request
+name: http://localhost:5000/api/goals
+description: ""
+url: http://localhost:5000/api/goals
+method: POST
+body:
+  type: json
+  content: ""
+order: 1788770993190
