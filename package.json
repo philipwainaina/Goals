@@ -1,5 +1,6 @@
 {
   "name": "mern-tutorial",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "main": "backend/server.js",
@@ -21,9 +22,12 @@
   },
   "homepage": "https://github.com/philipwainaina/mern-tutorial#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "colors": "^1.4.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.4"
   },
   "devDependencies": {
