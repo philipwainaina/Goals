@@ -1,6 +1,7 @@
  const bcrypt = require('bcryptjs')
+ const jwt = require('jsonwebtoken')
  const asyncHandler=require('express-async-handler')
- const userModel= require('../models/userModel')
+ const User= require('../models/userModel')
  
  
  
@@ -17,7 +18,7 @@ const registerUser = asyncHandler(async(req,res)=> {
     }
 
     //Check if the user Exist
-    const userExists= await userModel.findOne({email})
+    const userExists= await User.findOne({email})
 
     if(userExists){
     res.status(400)
@@ -28,43 +29,74 @@ const registerUser = asyncHandler(async(req,res)=> {
     const hashedPassword = await bcrypt.hash(password,salt)
 
     //Create User
-    const user= await userModel.create({
-        name,email,password:hashedPassword
-    })
+    const user= await User.create({
+        name,
+        email,
+        password:hashedPassword
+    }) 
 
     if (user) {
         res.status(201).json({
-        _id:user._id,name:user.name,email:user.email 
+        _id:user._id,
+        name:user.name,
+        email:user.email,
+        token: generateToken(user._id)
         })}
         else
             {
                 res.status(400)
                 throw new Error("Invalid user data")
             }
-    })
-
-const getUsers = asyncHandler(async (req, res) => {
-    const users = await userModel.find().select('-password')
-    res.status(200).json(users)
 })
+
 
 //@desccribe Login user
 // @route POST /api/users/login
 // @access Public
 const loginUser = asyncHandler(async(req,res)=>{
-    res.json({message:"Login User"})
+     const {email,password} = req.body
+
+    //Check for user email
+    const user = await User.findOne({email})
+
+    //Match the password with hashed password
+    if(user && (await bcrypt.compare(password,user.password))){
+
+        res.json({
+        _id:user._id,
+        name:user.name,
+        email:user.email,
+        token: generateToken(user._id)
+        })
+    } else {
+    res.status(400)
+    throw new Error("Invalid credentials")
+    }
 })
 
 //@desccribe Get user data
 // @route GET /api/users/me
 // @access Private
-const getMe = asyncHandler(async(req,res)=>{
-    res.json({message:"Get User Data"})
+const getMe = asyncHandler(async(req,res) => {
+    const {_id,name,email} = await User.findById(req.user.id)
+    
+    res.status(200).json({
+     
+        _id:_id,
+        name:name,
+        email:email,
+    }) 
 })
+
+//Generate JWT token
+const generateToken = (id) => {
+    return jwt.sign({id},process.env.JWT_SECRET,{
+        expiresIn:'30d'
+    }) 
+}
 
 module.exports ={
     registerUser,
-    getUsers,
     loginUser,
     getMe,
 }
