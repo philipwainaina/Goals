@@ -168,6 +168,9 @@ h3 {
 .btn:hover {
   transform: scale(0.98);
 }
+.close:hover {
+color: #ff0000;
+}
 
 .loadingSpinnerContainer {
   position: fixed;
