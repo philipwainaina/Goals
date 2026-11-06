@@ -6,9 +6,8 @@ const API_URL = '/api/goals/'
 const createGoal = async (goalData, token) => {
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         }
 
         const response = await axios.post(API_URL, goalData, config)
@@ -18,10 +17,9 @@ const createGoal = async (goalData, token) => {
 //get user goals
 const getGoals = async (token) => {
         const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
+            headers: {  
+                Authorization: `Bearer ${token}`,
+            },
         }
 
         const response = await axios.get(API_URL, config)
@@ -29,15 +27,13 @@ const getGoals = async (token) => {
     }
 
 //delete user goal
-const deleteGoal = async (Id, token) => {
+const deleteGoal = async (goalId, token) => {
         const config = {
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         }
-
-        const response = await axios.delete(API_URL + Id, config)
+        const response = await axios.delete(API_URL + goalId, config)
         return response.data
     }
 

@@ -8,23 +8,24 @@ import {getGoals, reset} from '../features/goals/goalSlice'
 
 function Dashboard() {
   const navigate = useNavigate()
+
   const dispatch = useDispatch()
   
   //get user from the auth slice
   const {user} = useSelector((state) => state.auth)
+
   //get goals from the goal slice
   const {goals, isLoading, isError, message} = useSelector((state) => state.goals)
  
 
 // If user is not logged in, redirect to login page
 useEffect(() => {
-  if (isError) {
-    console.log(message);
-  }
-
   if (!user) {
     navigate('/login');
     return;
+  }
+   if (isError) {
+    console.log(message);
   }
 
   dispatch(getGoals());
