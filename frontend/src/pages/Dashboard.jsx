@@ -15,23 +15,25 @@ function Dashboard() {
   //get goals from the goal slice
   const {goals, isLoading, isError, message} = useSelector((state) => state.goals)
  
-//if user is not logged in, redirect to login page
-  useEffect(() => {
-    if (isError){
-      console.log(message);
-    }
-    if (!user) {
-      navigate('/login')
-    }
 
-    dispatch(getGoals())
+// If user is not logged in, redirect to login page
+useEffect(() => {
+  if (isError) {
+    console.log(message);
+  }
 
-    return () => {
-      dispatch(reset())
-    }
+  if (!user) {
+    navigate('/login');
+    return;
+  }
 
+  dispatch(getGoals());
 
-  }, [user, navigate,isError, message, dispatch])
+  return () => {
+    dispatch(reset());
+  };
+}, [user, navigate, isError, message, dispatch]);
+
 
   if (isLoading) {
     return <Spinner />

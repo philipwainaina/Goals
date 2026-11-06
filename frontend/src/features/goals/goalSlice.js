@@ -93,7 +93,6 @@ export const getGoals = createAsyncThunk('goal/getAll', async (_, thunkAPI) => {
 })
 
 //delete user goal
-//create new goal
 export const deleteGoal = createAsyncThunk('goal/delete', async (Id, thunkAPI) =>{
     try {
        const token = thunkAPI.getState().auth.user.token
