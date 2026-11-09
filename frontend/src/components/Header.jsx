@@ -1,4 +1,3 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FaSignInAlt,FaSignOutAlt, FaUser } from 'react-icons/fa'
 import {Link} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
